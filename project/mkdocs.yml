@@ -1,0 +1,7 @@
+site_name: My Quiz
+plugins:
+  - search
+  - quiz
+
+extra_css:
+  - stylesheets/quiz.css
