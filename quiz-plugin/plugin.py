@@ -19,9 +19,8 @@ class QuizPlugin(BasePlugin):
             self._answer_replacer,
             markdown
         )
-
         return markdown
-
+    
     def _answer_replacer(self, match):
         marker = match.group(1)
         
