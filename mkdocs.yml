@@ -1,3 +1,4 @@
 site_name: nice
 plugins:
-        - quiz
+  - quiz:
+      enabled: true
