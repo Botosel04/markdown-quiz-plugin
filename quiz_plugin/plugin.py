@@ -113,7 +113,6 @@ class QuizPlugin(BasePlugin):
 
         return self.QUIZ_BLOCK_REGEX.sub(replace_quiz_block, markdown)
 
-
     def _render_single_question(self, text, index):
         lines = text.strip().split('\n')
         question_text = ""
