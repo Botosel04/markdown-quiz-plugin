@@ -2,6 +2,7 @@ import os
 import shutil
 import re
 import logging
+import random
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 
@@ -16,23 +17,17 @@ class QuizPlugin(BasePlugin):
     def on_config(self, config):
         if not self.config['enabled']:
             return config
-
         config['extra_css'].append('assets/quiz.css')
         config['extra_javascript'].append('assets/quiz.js')
-
         return config
 
     def on_post_build(self, config):
         if not self.config['enabled']:
             return
-
         current_dir = os.path.dirname(__file__)
         assets_source_dir = os.path.join(current_dir, 'assets')
-
         assets_dest_dir = os.path.join(config['site_dir'], 'assets')
-
         os.makedirs(assets_dest_dir, exist_ok=True)
-
         if os.path.exists(assets_source_dir):
             for filename in os.listdir(assets_source_dir):
                 if filename.endswith('.css') or filename.endswith('.js'):
@@ -40,22 +35,19 @@ class QuizPlugin(BasePlugin):
                     dst_file = os.path.join(assets_dest_dir, filename)
                     shutil.copyfile(src_file, dst_file)
         else:
-            log.warning("[QuizPlugin] 'assets' directory not found. CSS/JS might be missing.")
+            log.warning("[QuizPlugin] 'assets' directory not found.")
 
     INCLUDE_REGEX = re.compile(r'^\s*include\((.+?)\)', flags=re.MULTILINE)
     QUIZ_BLOCK_REGEX = re.compile(r'```quiz\s+(.*?)```', flags=re.DOTALL)
     QUESTION_SPLIT_REGEX = re.compile(r'(^|\n)###\s+Q')
     ANSWER_REGEX = re.compile(r'^\s*\[(x|\s)?\]\s*(.*)', flags=re.MULTILINE)
-
+    DROPDOWN_REGEX = re.compile(r'\{\{(.+?)\}\}')
 
     def on_page_markdown(self, markdown, page, config, **kwargs):
         if not self.config['enabled']:
             return markdown
-
         markdown = self._process_includes(markdown, page)
-
         markdown = self._process_quizzes(markdown)
-
         return markdown
 
     def _process_includes(self, markdown, page):
@@ -63,25 +55,18 @@ class QuizPlugin(BasePlugin):
             filename = match.group(1).strip()
             current_file_dir = os.path.dirname(page.file.abs_src_path)
             target_file_path = os.path.join(current_file_dir, filename)
-
             try:
                 with open(target_file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 return self._process_includes(content, page)
-            except FileNotFoundError:
-                error_msg = f"Error: File not found: {filename}"
-                log.warning(f"[QuizPlugin] {error_msg}")
-                return f'<p style="color: red;">{error_msg}</p>'
             except Exception as e:
                 log.error(f"[QuizPlugin] Error reading {filename}: {e}")
-                return ""
-
+                return f'<p style="color: red;">Error: File not found: {filename}</p>'
         return self.INCLUDE_REGEX.sub(replace_include, markdown)
 
     def _process_quizzes(self, markdown):
         def replace_quiz_block(match):
             block_content = match.group(1)
-            
             raw_questions = self.QUESTION_SPLIT_REGEX.split(block_content)
             questions = [q for q in raw_questions if q.strip() and "###" not in q]
             total_questions = len(questions)
@@ -107,7 +92,7 @@ class QuizPlugin(BasePlugin):
             </div>
             ''')
             html_output.append('<div class="quiz-results"></div>')
-            html_output.append('</div>')
+            html_output.append('</div>') 
 
             return "\n".join(html_output)
 
@@ -115,8 +100,9 @@ class QuizPlugin(BasePlugin):
 
     def _render_single_question(self, text, index):
         lines = text.strip().split('\n')
-        question_text = ""
+        question_text_parts = []
         answers_html = []
+        correct_answer_count = 0
         
         for line in lines:
             line = line.strip()
@@ -124,20 +110,66 @@ class QuizPlugin(BasePlugin):
             
             ans_match = self.ANSWER_REGEX.match(line)
             if ans_match:
-                is_correct = "true" if ans_match.group(1) == 'x' else "false"
+                is_correct_marker = ans_match.group(1) == 'x'
+                if is_correct_marker:
+                    correct_answer_count += 1
+                
+                is_correct_str = "true" if is_correct_marker else "false"
                 ans_text = ans_match.group(2)
+                
                 answers_html.append(
-                    f'<button class="quiz-answer" data-correct="{is_correct}">{ans_text}</button>'
+                    f'<button class="quiz-answer" data-correct="{is_correct_str}">{ans_text}</button>'
                 )
             else:
-                if question_text: question_text += " " + line
-                else: question_text = line
+                question_text_parts.append(line)
 
+        full_question_text = " ".join(question_text_parts)
+        
+        def replace_dropdown(match):
+            content = match.group(1)
+            raw_options = content.split('|')
+            
+            processed_options = []
+            for i, opt in enumerate(raw_options):
+                opt = opt.strip()
+                is_correct = "true" if i == 0 else "false"
+                
+                processed_options.append({
+                    "text": opt,
+                    "is_correct": is_correct
+                })
+            
+            random.shuffle(processed_options)
+            
+            select_html = ['<select class="quiz-dropdown">']
+            select_html.append('<option>Choose...</option>')
+            
+            for item in processed_options:
+                select_html.append(
+                    f'<option data-correct="{item["is_correct"]}">{item["text"]}</option>'
+                )
+            
+            select_html.append('</select>')
+            return "".join(select_html)
+
+        full_question_text = self.DROPDOWN_REGEX.sub(replace_dropdown, full_question_text)
+
+        data_type_attr = "" 
+        if len(answers_html) > 0:
+            if correct_answer_count == 1:
+                data_type_attr = ' data-type="single"'
+            else:
+                data_type_attr = ' data-type="multiple"'
+        
         display_style = ' style="display: none;"' if index > 0 else ''
         
+        answers_block = ""
+        if answers_html:
+            answers_block = f'<div class="quiz-answer-container">{"".join(answers_html)}</div>'
+
         return f'''
-        <div class="quiz-question-block" data-question-index="{index}"{display_style}>
-            <p class="quiz-question">{question_text}</p>
-            {"".join(answers_html)}
+        <div class="quiz-question-block" data-question-index="{index}"{data_type_attr}{display_style}>
+            <p class="quiz-question">{full_question_text}</p>
+            {answers_block}
         </div>
         '''
