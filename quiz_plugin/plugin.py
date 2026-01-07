@@ -90,7 +90,7 @@ class QuizPlugin(BasePlugin):
         return meta, cleaned
 
 
-    def _render_start_screen(self, meta):
+    def _render_start_screen(self, meta, total_questions=0):
         if not meta:
             return """
             <div class="quiz-start-screen">
@@ -115,9 +115,23 @@ class QuizPlugin(BasePlugin):
         meta_items = []
         if "author" in meta:
             meta_items.append(f'<span class="quiz-meta-item"> Author: {meta["author"]}</span>')
+        
         if "time_limit" in meta:
             minutes = int(int(meta["time_limit"]))
             meta_items.append(f'<span class="quiz-meta-item"> Time: {minutes} seconds</span>')
+
+        # --- Epic #110: Passing Score Pill ---
+        if "required_score" in meta:
+            score_val = meta["required_score"]
+            display_text = f"Passing Score: {score_val}"
+            
+            # If it's a number, format as X/Y
+            if str(score_val).isdigit() and total_questions > 0:
+                 display_text = f"Passing Score: {score_val}/{total_questions}"
+
+            # Added class quiz-baseline-pill
+            meta_items.append(f'<span class="quiz-meta-item quiz-baseline-pill">{display_text}</span>')
+        # ------------------------------------
 
         if meta_items:
             parts.append(f'''
@@ -207,7 +221,7 @@ class QuizPlugin(BasePlugin):
             # 1. Extract Meta-data and Clean Content
             quiz_meta, block_content = self._extract_quiz_meta(block_content)
 
-            # 2. Split into Questions
+            # 2. Split into Questions (MUST BE DONE BEFORE HTML GENERATION)
             if '---' in block_content:
                 # Split using regex, and clean up empty strings caused by trailing/leading delimiters
                 raw_questions = self.QUESTION_SPLIT_REGEX.split(block_content)
@@ -226,6 +240,9 @@ class QuizPlugin(BasePlugin):
                 "id": quiz_meta.get("id"),
                 "layout": layout_mode,
                 "timer": quiz_meta.get("time_limit"),
+                # --- Epic #110: Pass required_score to data-baseline ---
+                "baseline": quiz_meta.get("required_score"),
+                # -----------------------------------------------------
                 "shuffle-questions": self._normalize_choice(quiz_meta.get("shuffle_questions"), allowed={"true", "false"}, default="false"),
                 "shuffle-answers": self._normalize_choice(quiz_meta.get("shuffle_answers"), allowed={"true", "false"}, default="true"),
                 "feedback-mode": self._normalize_choice(quiz_meta.get("feedback_mode"), allowed={"immediate", "end"}, default="end"),
@@ -244,8 +261,8 @@ class QuizPlugin(BasePlugin):
             # Open the main quiz container
             html_output.append(f'<div class="quiz-container" markdown="1" {data_attrs}>')
             
-            # Add the Start Screen
-            html_output.append(self._render_start_screen(quiz_meta))
+            # Add the Start Screen (Now passing total_questions safely)
+            html_output.append(self._render_start_screen(quiz_meta, total_questions=len(questions)))
             
             # Open the main wrapper (Hidden until the user presses Start)
             html_output.append('<div class="quiz-main-wrapper" style="display: none;">')

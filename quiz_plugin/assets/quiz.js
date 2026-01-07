@@ -597,6 +597,35 @@ function generateReport(container, timeTakenSeconds, questionOrder) {
         questionsHTML += result.html;
         if (result.isCorrect) totalScore++;
     });
+
+    // --- MODIFIED: Baseline / Passing Score Logic (Simplified Text) ---
+    // Change: Replaced the banner style with a simple text output.
+    let comparisonHtml = ""; 
+    const baselineStr = container.getAttribute("data-baseline"); // Get the baseline from HTML
+    
+    if (baselineStr) {
+        const baseline = parseFloat(baselineStr);
+        // Added: Need total questions count to display "out of X" in requirements
+        const maxScore = questions.length; 
+        
+        if (!isNaN(baseline)) {
+            const hasPassed = totalScore >= baseline;
+            const statusText = hasPassed ? "PASSED" : "FAILED";
+            // Change: Use simple text colors instead of banner classes
+            const color = hasPassed ? "green" : "red";
+
+            // Change: Generate simple paragraph HTML instead of the styled div banner
+            comparisonHtml = `
+                <p style="font-weight: bold; color: ${color}; margin-bottom: 15px;">
+                    Result: ${statusText} <br>
+                    <span style="font-weight: normal; color: #333;">
+                        Your Result: ${totalScore} out of ${maxScore} | Required: ${baseline} out of ${maxScore}
+                    </span>
+                </p>
+            `;
+        }
+    }
+    // --- End Modified Logic ---
   
     const timeHtml = displayTime
         ? `<p style="font-size: 1em; margin-bottom: 20px;"> 
@@ -607,6 +636,9 @@ function generateReport(container, timeTakenSeconds, questionOrder) {
     return `
         <div style="padding: 20px; background-color: #f8f9fa; border-top: 2px solid #333; margin-top: 20px;">
             <h3 style="margin-top: 0;">Quiz Results</h3>
+
+            ${comparisonHtml} 
+            
             <p style="font-size: 1.2em; margin-bottom: 5px;">
                 You scored <strong>${totalScore}</strong> out of <strong>${questions.length}</strong>
             </p>
