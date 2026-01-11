@@ -17,6 +17,7 @@ Quisque porttitor lorem id ultrices facilisis. Duis hendrerit mauris et mauris m
 @title: my quiz
 @shuffle_questions: true
 @feedback_mode: immediate
+
 ---
 What is 2 + 2?
 [] 3
@@ -28,6 +29,11 @@ What is the capital of France?
 [] London
 [] Berlin
 @explanation: You can find the answer in [this chapter](#test-for-reference).
+---
+What is 2 + 2?
+[] 3
+[x] 4
+[] 5
 ---
 @END
 
