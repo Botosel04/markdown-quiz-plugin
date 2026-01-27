@@ -59,7 +59,7 @@ pip install mkdocs
 
     Use the `mkdocs serve --livereload` command to start the live-reloading server and see your quizzes rendered in real-time:
     ```bash
-    mkdocs serve
+    mkdocs serve --livereload
     ```
 
 

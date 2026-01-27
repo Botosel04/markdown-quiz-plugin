@@ -12,7 +12,7 @@ The Markdown Quiz Plugin is a powerful, lightweight extension that transforms yo
 @feedback_mode: immediate
 @shuffle_questions: false
 
-Which of the following are key benefits of using the Markdown Quiz Plugin? (Select all that apply)
+What do we bring to the table?
 [x] Easy integration into an existing Markdown workflow
 [x] Interactive learning and better engagement
 [x] Instant feedback for learners
@@ -22,22 +22,11 @@ Which of the following are key benefits of using the Markdown Quiz Plugin? (Sele
 
 ---
 
-Who is the plugin addressed to? (Select all that apply)
+Who is the plugin addressed to?
 [x] Educators & trainers
-[x] Technical writers
-[x] Developers
-[x] Team leads
 [x] Anyone writing in Markdown
 [ ] Only professional designers
 [ ] Only database administrators
-
----
-
-Match each audience to a typical use case:
-{Educators & trainers | Create interactive learning materials for students and workshop participants}
-{Technical writers | Add knowledge checks to technical documentation}
-{Developers | Build interactive onboarding and API documentation}
-{Team leads | Create internal training and knowledge verification}
 
 @END
 
