@@ -1,30 +1,45 @@
-# Presentation
-
+#Presentation
 @START
-@title: Presentation
-@description: 10 students doing a project
-@author: us
+@title:Designing a Quiz Plugin people actually want
+@author: Us
 @time_limit: 5400
 @feedback_mode: immediate
 ---
+What do we bring to the table?
+[x] Easy integration into an existing Markdown workflow
+[x] Interactive learning and better engagement
+[x] Instant feedback for learners
+[x] Customizable design
+[ ] Requires a separate backend service to run quizzes
+[ ] Only works outside of MkDocs
+---
+Who is the plugin addressed to?
+[x] Educators & trainers
+[x] Anyone writing in Markdown
+[ ] Only professional designers
+[ ] Only database administrators
+---
 The journey begins
 ---
-At the start of the project, we believed meetings were mainly {{helpful but optional|essential for alignment|slowing us down|the core of teamwork}}
-@explanation: Meetings turned out to be critical for coordination, decisions, and avoiding rework.
+What were our expectations?
+[x] It won't actually be 10 hours per week
+[x] I expect to make something that I'm really proud of
 ---
-Will we spend more time
-[] Working on the project
-[x] Talking about working on the project
----
-What new terms did we learn?
+What new terms did we learn on the first day?
 [x] Work package
 [] Leader
 [x] User Story
 [] Task
 [x] Jour fixe
 [x] Agile manifesto
+[x] Definition of Done
+[] Milestone
+[] Requirement
 ---
-Which is the order of the epics?
+At the start of the project, we believed meetings were mainly {{helpful but optional|essential for alignment|slowing us down|the core of teamwork}}
+@explanation: Meetings turned out to be critical for coordination, decisions, and avoiding rework.
+---
+The project was structured in the following epics:
 (1.) Research
 (2.) UI/UX
 (3.) Markdown syntax
@@ -33,18 +48,14 @@ Which is the order of the epics?
 (6.) Documentation
 ---
 How did we use Taiga's features?
-{Epics|Organise everything}
-{Issues|Evidentiate things that needed improvement}
-{Wiki|Document the meetings}
+{Epics|Organise the overall structure of the project}
+{Issues|Highlight problems and areas for improvement}
+{Wiki|Document meetings and decisions}
 ---
 We had a total of {{119|90|131|103}} artifacts on Taiga created
 ---
 The project timeline
 ![Picture1](../pictures/timeline.png)
----
-Some quotes
-[] It won't actually be 10 hours per week
-[] I expect to make something that I'm really proud of
 ---
 Our epics
 ---
@@ -69,7 +80,7 @@ What students told us
 [x]Most used quiz platforms
 ---
 Most wanted features{{Explanations | Question randomization | Question overview | Timer | Feedback}}
-![Features](features.png)
+![Features](/pictures/features.png)
 ---
 Educator perspective: "It would be better to be able to work in my own environment"
 ---
@@ -438,11 +449,11 @@ How many lines of code does the Documentation have?
 [] 655
 [] 412
 ---
-There are a total of 15 {{Rendered Quizzez| Blocks of code| Headers}} in the Documentation.
+There are a total of 15 {{Rendered Quizzez|Blocks of code| Headers}} in the Documentation.
 ---
 How many times did I change the style of the highlighted notes?
 
-![Picture1](../NotesStyle.png)
+![Picture1](/pictures/NotesStyle.png)
 
 [] 1
 [] 2
@@ -493,11 +504,75 @@ Now let's take a closer look 🔍
 ---
 What we learned along the way
 ---
+Who are these guys?
+![PictureSimpsons](/pictures/simpsons.jpeg)
+![PictureDark](/pictures/dark.jpg)
+[] epics
+[x] the team members
+[x] computer scientists
+
+---
+
+What languages have we learned or become more skilled at during our project?
+
+[x] java
+[x] python
+[] ryanair
+[x] css
+[x] markdown
+
+---
+What is the key task approaching the project?
+[] Collecting and classifying everyone's ideas
+[x] Matching perfectly person and task
+[] Getting along with everyone
+[] Setting meetings
+
+---
+What is one of the most important things we have learned about markdown?
+[] That is the best language
+[] How to use it
+[x] How much in can be done with it
+
+---
+How have we increased our creativity?
+[x] Thinking of new approaches to the different problems that arised
+[] Painting during our meetings
+[x] Asking ourselves questions about our own project's potential for improvement
+
+---
+
+What have we learned about project development?
+
+[x] Initiative and self-sufficiency: no one is going to force to participate, you have to do so on your own
+[x] Different cultures do not mean incompatibility: we have understood each other enough to build something together
+[x] Mistakes and setbacks are going to happen: is part of the process
+
+
+---
+
+
+Then...what knowledge have we gathered and why?:
+
+{Communication skills | Coordinating people from different cultures in a huge project }
+{Creativity | Having freedom and a customizable project}
+{Time management | Setting our own deadlines }
+{Improvising | Changing aspects and timelines from the project }
+{Minigolf | Team building }
+
+---
+
+So, as a conclusion of the project's final result: Team building...
+[] has not influenced the project at all
+[x] is key to getting to know your co-workers in order to develop a great project
+[x] is as important as communication skills
+sim
+---
 Demo
 ---
 Future Implementations
 ---
-Which of the following are the 4 key roadmap areas?
+Which of the following are the 5 key roadmap areas?
 
 [x] Text-to-Speech Accessibility
 [x] Multilingual Support  
@@ -505,7 +580,7 @@ Which of the following are the 4 key roadmap areas?
 [x] Collaborative Mode
 [x] Statistics & Feedback Tools
 
-@explanation: These four areas focus on making the plugin more inclusive, global, and engaging for long-term study.
+@explanation: These five areas focus on making the plugin more inclusive, global, and engaging for long-term study.
 ---
 
 How will the "Statistics & Feedback" module improve the student experience?
