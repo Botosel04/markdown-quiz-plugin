@@ -63,7 +63,7 @@ This README is just a quick start guide. The plugin supports advanced features l
 * **Dropdowns:** `{{Correct|Wrong1|Wrong2}}`
 * **Detailed Explanations & Anchors:** `@explanation: Read more [here](#anchor)`
 
-**For the complete keyword reference, advanced usage, and FAQ, please see our [Full Documentation](docs/documentation.md).**
+**For the complete keyword reference, advanced usage, and FAQ, please see our [Full Documentation](https://botosel04.github.io/markdown-quiz-plugin/documentation/).**
 
 ## 🤝 Contributions
 
