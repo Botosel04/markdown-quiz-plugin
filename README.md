@@ -4,7 +4,6 @@ The **MkDocs Quiz Plugin** transforms static documentation into engaging, intera
 
 It addresses key challenges in modern documentation: it transforms passive reading into active learning, provides immediate verification, and enables interactive content creation without technical expertise.
 
-![Demo Placeholder](docs/screenshots/demo.gif) *(Replace this line with a path to a real GIF or screenshot of your quiz in action!)*
 
 ## ✨ Features
 
